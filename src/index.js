@@ -1,66 +1,72 @@
-const ramenMenu = document.querySelector('div#ramen-menu');
-const newRamenForm = document.querySelector('#new-ramen');
+const ramenMenu = document.querySelector('div#ramen-menu')
+const newRamenForm = document.querySelector('#new-ramen')
 
-// Function to fetch ramen data and display images
-const fetchRamens = () => {
-    fetch('http://localhost:3000/ramens')
-        .then(response => response.json())
-        .then(ramenArr => {
-            ramenArr.forEach(ramenObject => {
-                renderRamenImg(ramenObject);
-            });
+
+fetch('http://localhost:3000/ramens')
+    .then(response => response.json())
+    .then(ramenArr => {
+        // const ramenMenu = document.querySelector('div#ramen-menu')
+
+        ramenArr.forEach(ramenObject => {
+            renderRamenImg(ramenObject)
         })
-        .catch(error => console.error('Error fetching ramens:', error));
-};
+    })
 
-// Event listener for the new ramen form
+// fetch('http://localhost:3000/ramens')
+//     .then(function (response) {
+//         return response.json()
+//     })
+//     .then(function (data) {
+//         console.log(data)
+//     })
+
+
 newRamenForm.addEventListener('submit', event => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const nameInput = event.target.name.value;
-    const restaurantInput = event.target.restaurant.value;
-    const imageInput = event.target.image.value;
-    const ratingInput = event.target.rating.value;
-    const commentInput = event.target['new-comment'].value;
+    const nameInput = event.target.name.value
+    const restaurantInput = event.target.restaurant.value
+    const imageInput = event.target.image.value
+    const ratingInput = event.target.rating.value
+    const commentInput = event.target['new-comment'].value
 
     const newRamen = {
         name: nameInput,
         restaurant: restaurantInput,
         image: imageInput,
         rating: ratingInput,
-        comment: commentInput,
-    };
+        comment: commentInput
+    }
 
-    renderRamenImg(newRamen);
-    event.target.reset(); // Reset the form fields
-});
+    // const ramenMenu = document.querySelector('div#ramen-menu')
+    renderRamenImg(newRamen)
+    event.target.reset()
+})
 
-// Function to render ramen image and add event listener
+
 function renderRamenImg(ramenObject) {
-    const imgTag = document.createElement('img');
-    imgTag.src = ramenObject.image;
-    imgTag.alt = ramenObject.name; // Optional: add alt text for accessibility
-    ramenMenu.appendChild(imgTag); // Append the image to the ramen menu
 
-    imgTag.addEventListener('click', () => {
-        const ramenDetailDiv = document.querySelector('div#ramen-detail');
+    const imgTag = document.createElement('img')
+    imgTag.src = ramenObject.image
+    ramenMenu.append(imgTag)
 
-        const detailImg = ramenDetailDiv.querySelector('img.detail-image');
-        detailImg.src = ramenObject.image;
 
-        const nameH2 = ramenDetailDiv.querySelector('.name');
-        nameH2.textContent = ramenObject.name;
+    imgTag.addEventListener('click', event => {
+        const ramenDetailDiv = document.querySelector('div#ramen-detail')
 
-        const restaurantH3 = ramenDetailDiv.querySelector('h3.restaurant');
-        restaurantH3.textContent = ramenObject.restaurant;
+        const detailImg = ramenDetailDiv.querySelector('img.detail-image')
+        detailImg.src = ramenObject.image
 
-        const ratingSpan = document.querySelector('#rating-display');
-        ratingSpan.textContent = ramenObject.rating;
+        const nameH2 = ramenDetailDiv.querySelector('.name')
+        nameH2.textContent = ramenObject.name
 
-        const commentPtag = document.querySelector('#comment-display');
-        commentPtag.textContent = ramenObject.comment;
-    });
+        const restaurantH3 = ramenDetailDiv.querySelector('h3.restaurant')
+        restaurantH3.textContent = ramenObject.restaurant
+
+        const ratingSpan = document.querySelector('#rating-display')
+        ratingSpan.textContent = ramenObject.rating
+
+        const commentPtag = document.querySelector('#comment-display')
+        commentPtag.textContent = ramenObject.comment
+    })
 }
-
-// Invoke the fetchRamens function to load the initial data
-fetchRamens();
